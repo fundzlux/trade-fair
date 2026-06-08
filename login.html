@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TradeX - Login</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background: radial-gradient(circle at top, #0f172a, #020617);
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.container{
+  width:90%;
+  max-width:420px;
+  background:#111827;
+  padding:25px;
+  border-radius:15px;
+}
+
+h2{text-align:center;}
+
+input{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:8px;
+  border:none;
+  background:#1f2937;
+  color:white;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+  border:none;
+  border-radius:8px;
+  background:#3b82f6;
+  color:white;
+  font-size:16px;
+}
+
+button:hover{
+  background:#2563eb;
+}
+
+.link{
+  text-align:center;
+  margin-top:10px;
+  color:#93c5fd;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>🔑 Login to TradeX</h2>
+
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+<div class="link" onclick="goSignup()">
+Create new account
+</div>
+</div>
+
+<script>
+function login(){
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  if(!email || !password){
+    alert("Fill all fields");
+    return;
+  }
+
+  // fake auth check
+  localStorage.setItem("loggedIn","true");
+
+  alert("Login successful!");
+
+  window.location.href = "dashboard.html";
+}
+
+function goSignup(){
+  window.location.href = "signup.html";
+}
+</script>
+
+</body>
+</html>

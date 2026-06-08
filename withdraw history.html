@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Withdrawal History</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.small {
+    font-size: 13px;
+    color: #cbd5e1;
+}
+
+.empty {
+    text-align: center;
+    color: #94a3b8;
+    margin-top: 50px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Withdrawal History</h2>
+
+    <div id="history"></div>
+</div>
+
+<script>
+let history = JSON.parse(localStorage.getItem("withdrawHistory")) || [];
+
+let container = document.getElementById("history");
+
+if (history.length === 0) {
+    container.innerHTML = "<p class='empty'>No withdrawal history yet</p>";
+} else {
+    history.reverse().forEach(item => {
+        let div = document.createElement("div");
+        div.className = "card";
+
+        div.innerHTML = `
+            <b>Amount:</b> $${item.amount}<br>
+            <span class="small">Wallet: ${item.wallet}</span><br>
+            <span class="small">Wallet ID: ${item.walletId}</span><br>
+            <span class="small">Status: ${item.status}</span><br>
+            <span class="small">Date: ${item.date}</span>
+        `;
+
+        container.appendChild(div);
+    });
+}
+</script>
+
+</body>
+</html>

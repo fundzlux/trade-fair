@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Withdraw</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 360px;
+    background: rgba(255,255,255,0.05);
+    padding: 25px;
+    border-radius: 12px;
+}
+
+h2 {
+    text-align: center;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background: #22c55e;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #16a34a;
+}
+
+.status {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.note {
+    font-size: 12px;
+    text-align: center;
+    color: #cbd5e1;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Withdraw Funds</h2>
+
+    <p style="text-align:center;">
+        Balance: $<span id="balance">0</span>
+    </p>
+
+    <input type="number" id="amount" placeholder="Enter amount (₦ / $)" />
+
+    <select id="wallet">
+        <option value="">Select Wallet (Foreign Only)</option>
+        <option value="PayPal">PayPal</option>
+        <option value="Skrill">Skrill</option>
+        <option value="Payoneer">Payoneer</option>
+        <option value="Crypto">Crypto Wallet</option>
+    </select>
+
+    <input type="text" id="walletId" placeholder="Enter Wallet Email / ID" />
+
+    <button onclick="withdraw()">Withdraw</button>
+
+    <p class="note">
+        Withdrawal will be deducted from your dashboard balance.
+    </p>
+
+    <div class="status" id="status"></div>
+</div>
+
+<script>
+// get dashboard balance
+let balance = parseFloat(localStorage.getItem("paidAmount")) || 0;
+document.getElementById("balance").innerText = balance;
+
+function withdraw() {
+    let amount = parseFloat(document.getElementById("amount").value);
+    let wallet = document.getElementById("wallet").value;
+    let walletId = document.getElementById("walletId").value;
+
+    if (!amount || amount <= 0) {
+        alert("Enter a valid amount");
+        return;
+    }
+
+    if (!wallet || !walletId) {
+        alert("Select wallet and enter wallet ID");
+        return;
+    }
+
+    // CHECK BALANCE
+    if (amount > balance) {
+        alert("Insufficient balance!");
+        return;
+    }
+
+    // SUBTRACT BALANCE
+    let history = JSON.parse(localStorage.getItem("withdrawHistory")) || [];
+
+history.push({
+    amount: amount,
+    wallet: wallet,
+    walletId: walletId,
+    status: "Successful",
+    date: new Date().toLocaleString()
+});
+
+localStorage.setItem("withdrawHistory", JSON.stringify(history));
+
+    // UPDATE UI
+    document.getElementById("balance").innerText = balance;
+
+    document.getElementById("status").innerText =
+        "Withdrawal Successful! Sent to " + wallet;
+
+    setTimeout(() => {
+        alert("Transaction Successful!");
+        window.location.href = "dashboard.html";
+    }, 1500);
+}
+</script>
+
+</body>
+</html>
